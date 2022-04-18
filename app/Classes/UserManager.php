@@ -17,4 +17,16 @@ class UserManager
         }
         
     }
+
+
+    static public function editAccount($array){
+        $user = User::create($array);
+        if($user){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
 }

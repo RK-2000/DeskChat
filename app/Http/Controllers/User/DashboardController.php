@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
     public function index(){
-        $user = Auth::user();
+        $user = User::where('id',Auth::id())->first();
         return view('main.home',compact('user'));
     }
 }

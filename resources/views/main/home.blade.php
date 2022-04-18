@@ -1,8 +1,45 @@
 @extends('layouts/main')
 
 @section('content')
+<script>
+  @if(Session::has('message'))
+  toastr.options =
+  {
+  	"closeButton" : true,
+  	"progressBar" : true
+  }
+  		toastr.success("{{ session('message') }}");
+  @endif
 
+  @if(Session::has('error'))
+  toastr.options =
+  {
+  	"closeButton" : true,
+  	"progressBar" : true
+  }
+  		toastr.error("{{ session('error') }}");
+  @endif
+
+  @if(Session::has('info'))
+  toastr.options =
+  {
+  	"closeButton" : true,
+  	"progressBar" : true
+  }
+  		toastr.info("{{ session('info') }}");
+  @endif
+
+  @if(Session::has('warning'))
+  toastr.options =
+  {
+  	"closeButton" : true,
+  	"progressBar" : true
+  }
+  		toastr.warning("{{ session('warning') }}");
+  @endif
+</script>
 <!-- Modal -->
+<form method="post" action="{{route('editProfilePost')}}">
 <div class="modal fade container-fluid" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
@@ -11,41 +48,33 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body row">
-        <form>
+          @csrf
           <div class="mb-3 col-12">
             <label for="recipient-name" class="col-form-label">Name:</label>
-            <input type="text" class="form-control" id="name" name="name">
+            <input type="text" class="form-control" id="name" name="name" value="{{$user->name}}">
           </div>
           <div class="mb-3 col-12">
             <label for="message-text" class="col-form-label">Email:</label>
-            <input type="text" class="form-control" id="email">
+            <input type="text" class="form-control" id="email" name="email" value="{{$user->email}}">
+          </div>
+          <div class="mb-3 col-12">
+            <label for="dob" class="col-form-label">Date Of Birth:</label>
+            <input type="date" class="form-control" id="dob" name="dob" value="{{$user->dob}}"/>
+          </div>
+          <div class="mb-3 col-12">
+            <label for="phone" class="col-form-label">Phone Number:</label>
+            <input type="text" class="form-control" id="phone" name="phone" value="{{$user->phone}}"/>
           </div>
           <div class="mb-3 col-12">
             <label for="bio" class="col-form-label">Bio:</label>
-            <textarea class="form-control" id="bio" name="bio"></textarea>
+            <textarea class="form-control" id="bio" name="desciption">{{$user->desciption}}</textarea>
           </div>
-          <div class="mb-3 col-12">
-            <label for="message-text" class="col-form-label">Address:</label>
-            <textarea class="form-control" id="address" name="address"></textarea>
-          </div>
-          <div class="mb-3 col-4">
-            <label for="country" class="col-form-label">Country:</label>
-            <input type="text" class="form-control" id="country" name="country">
-          </div>
-          <div class="mb-3 col-4">
-            <label for="state" class="col-form-label">State:</label>
-            <input type="text" class="form-control" id="state" name="state">
-          </div>
-          <div class="mb-3 col-4">
-            <label for="city" class="col-form-label">City:</label>
-            <input type="text" class="form-control" id="city" name="city">
-          </div>
-        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
       </div>
+    
     </div>
   </div>
 </div>
@@ -166,14 +195,13 @@
               </div>
               <div class="card-body p-3">
                 <p class="text-sm">
-                  Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality).
+                  {{$user->desciption}}
                 </p>
                 <hr class="horizontal gray-light my-4">
                 <ul class="list-group">
-                  <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Full Name:</strong> &nbsp; {{$user->name}}</li>
-                  <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Mobile:</strong> &nbsp; Add Your Number</li>
+                  <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Full Name:</strong> &nbsp; {{Auth::user()->name}}</li>
+                  <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Mobile:</strong> &nbsp; {{$user->phone}}</li>
                   <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; {{$user->email}}</li>
-                  <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Location:</strong> &nbsp; Add Your Address</li>
                   <li class="list-group-item border-0 ps-0 pb-0">
                     <strong class="text-dark text-sm">Social:</strong> &nbsp;
                     <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">

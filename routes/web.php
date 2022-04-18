@@ -19,13 +19,13 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('create-account',[UserController::class,'index'])->name("createAccount");
 Route::post('create-account',[UserController::class,'createAccountPost'])->name("createAccountPost");
 
-Route::get('log-in',[UserController::class,'signIn'])->name("signIn");
-Route::post('log-in',[UserController::class,'signInPost'])->name("signInPost");
+Route::get('login',[UserController::class,'signIn'])->name("signIn");
+Route::post('login',[UserController::class,'signInPost'])->name("signInPost");
 
 Route::get('logout', [UserController::class,'logout'])->name('logout');
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('home',[DashboardController::class,'index'])->name("dashboard");
-    Route::get('edit',[UserController::class,'editProfile'])->name("editProfile");
+    Route::get('/',[DashboardController::class,'index'])->name("dashboard");
+    Route::post('edit',[UserController::class,'editProfilePost'])->name("editProfilePost");
 });

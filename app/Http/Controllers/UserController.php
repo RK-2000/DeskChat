@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Classes\UserManager;
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\EditProfile;
 use App\Http\Requests\LoginUserRequest;
 use App\Models\User;
 use Illuminate\Contracts\Session\Session;
@@ -47,15 +48,27 @@ class UserController extends Controller
         return back();
     }
 
-    public function editProfile()
-    {
-        # code...
+    public function editProfilePost(Request $request)
+    {   
+        $request->validate([
+            'email' => 'required|unique:users',
+            // 'full_name' => 'required',
+            // 'dob' => 'required',
+            // 'phone' => 'required',
+            // 'desciption' => 'required',
+        ]);
+
         $user = User::where('id',Auth::id())->first();
-        if($user){
-            return $user;
-        }
-        return;
+        $user->name = $request->name;
+        $user->dob = $request->dob;
+        $user->desciption = $request->desciption;
+        $user->phone = $request->phone;
+        $user->email = $request->email;
+        $user->save();
+        return redirect()->route('dashboard')->with('message',"Profile was edited"); 
     }
+
+
     public function logout(){
         Auth::logout();
         return redirect()->route('signIn');
