@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    // Function to display Create Account Page
     public function index(){
         return view('sign-up');
     }
@@ -50,14 +49,6 @@ class UserController extends Controller
 
     public function editProfilePost(Request $request)
     {   
-        $request->validate([
-            'email' => 'required|unique:users',
-            // 'full_name' => 'required',
-            // 'dob' => 'required',
-            // 'phone' => 'required',
-            // 'desciption' => 'required',
-        ]);
-
         $user = User::where('id',Auth::id())->first();
         $user->name = $request->name;
         $user->dob = $request->dob;
