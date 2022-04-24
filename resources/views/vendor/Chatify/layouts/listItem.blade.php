@@ -1,4 +1,7 @@
 {{-- -------------------- Saved Messages -------------------- --}}
+@php
+    $id = rand(10,100);
+@endphp
 @if($get == 'saved')
     <table class="messenger-list-item m-li-divider" data-contact="{{ Auth::user()->id }}">
         <tr data-action="0">
@@ -43,13 +46,13 @@
                 : ''
             !!}
             {{-- Last message body --}}
+            <span id="lastMessageText{{$id}}">
             @if($lastMessage->attachment == null)
             {{
-                strlen($lastMessage->body) > 30
-                ? trim(substr($lastMessage->body, 0, 30)).'..'
-                : $lastMessage->body
+                strlen($lastMessage->body) > 30 ? trim(substr($lastMessage->body, 0, 30)).'..' : $lastMessage->body
             }}
             @else
+            </span>
             <span class="fas fa-file"></span> Attachment
             @endif
         </span>
@@ -85,5 +88,20 @@
 @if($get == 'sharedPhoto')
 <div class="shared-photo chat-image" style="background-image: url('{{ $image }}')"></div>
 @endif
+@if (isset($lastMessage))
+    <script>
+    function decryptMessage(message)
+    {   
+        var key= 'abc123XYZ';
+        var decrypted = CryptoJS.AES.decrypt(message, key);
+        return decrypted.toString(CryptoJS.enc.Utf8);
 
+    }
+    
+    $( document ).ready(function() {
+        let message = decryptMessage("<?php echo $lastMessage->body; ?>");
+        $("#lastMessageText{{$id}}").text(message);       
+    });
+</script>    
+@endif
 

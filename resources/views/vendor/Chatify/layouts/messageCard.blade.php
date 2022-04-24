@@ -1,8 +1,11 @@
-{{-- -------------------- The default card (white) -------------------- --}}
 @if($viewType == 'default')
     @if($from_id != $to_id)
     <div class="message-card" data-id="{{ $id }}">
-        <p>{!! ($message == null && $attachment != null && @$attachment[2] != 'file') ? $attachment[1] : nl2br($message) !!}
+        <p> 
+            <span id="sender{{$id}}">
+            {!! ($message == null && $attachment != null && @$attachment[2] != 'file') ? $attachment[1] : nl2br($message) !!}
+            </span>
+            
             <sub title="{{ $fullTime }}">{{ $time }}</sub>
             {{-- If attachment is a file --}}
             @if(@$attachment[2] == 'file')
@@ -26,8 +29,11 @@
 {{-- -------------------- Sender card (owner) -------------------- --}}
 @if($viewType == 'sender')
     <div class="message-card mc-sender" data-id="{{ $id }}">
-        <p>{!! ($message == null && $attachment != null && @$attachment[2] != 'file') ? $attachment[1] : nl2br($message) !!}
-            <sub title="{{ $fullTime }}" class="message-time">
+        <p>
+                <span id="my{{$id}}">
+                   {!! ($message == null && $attachment != null && @$attachment[2] != 'file') ? $attachment[1] : nl2br($message) !!}
+                </span> 
+                <sub title="{{ $fullTime }}" class="message-time">
                 <span class="fas fa-{{ $seen > 0 ? 'check-double' : 'check' }} seen"></span> {{ $time }}</sub>
                 {{-- If attachment is a file --}}
             @if(@$attachment[2] == 'file')
@@ -46,3 +52,22 @@
     </div>
     @endif
 @endif
+<script>
+    function decryptMessage(message)
+    {   
+        var key= 'abc123XYZ';
+        var decrypted = CryptoJS.AES.decrypt(message, key);
+        return decrypted.toString(CryptoJS.enc.Utf8);
+
+    }
+    
+    $( document ).ready(function() {
+        let message = decryptMessage("<?php echo $message; ?>");
+        if("<?php echo $viewType; ?>" == 'sender'){
+            $("#my{{$id}}").text(message);
+        }
+        else{ 
+            $("#sender{{$id}}").text(message);    
+        }        
+    });
+</script>
