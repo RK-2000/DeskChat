@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class EditProfile extends FormRequest
 {
@@ -24,12 +26,13 @@ class EditProfile extends FormRequest
      */
     public function rules()
     {
+    
         return [
-            'email' => 'required|unique:user',
+            'email' => 'required|unique:users,email,'.Auth::id(),
             'name' => 'required',
-            'dob' => 'required',
-            'phone' => 'required',
-            'bio' => 'required',
+            'dob' => 'required|date',
+            'phone' => 'required|digits:10',
+            'desciption' => 'required',
         ];
     }
 

@@ -7,10 +7,10 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\EditProfile;
 use App\Http\Requests\LoginUserRequest;
 use App\Models\User;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -30,6 +30,8 @@ class UserController extends Controller
         }
         $request->session()->flash('error','Try Again!');
         return back();
+        
+        
     }
 
     public function signIn(){
@@ -43,11 +45,11 @@ class UserController extends Controller
         if(Auth::attempt($credentials)){
             return redirect()->route("dashboard");
         }
-        $request->session()->flash('error','Invalid Credentials');
+        Session::flash('error','Invalid Credentials');
         return back();
     }
 
-    public function editProfilePost(Request $request)
+    public function editProfilePost(EditProfile $request)
     {   
         $user = User::where('id',Auth::id())->first();
         $user->name = $request->name;

@@ -5,38 +5,50 @@
   @if(Session::has('message'))
   toastr.options =
   {
-  	"closeButton" : true,
-  	"progressBar" : true
+    "closeButton" : true,
+    "progressBar" : true
   }
-  		toastr.success("{{ session('message') }}");
+      toastr.success("{{ session('message') }}");
   @endif
 
   @if(Session::has('error'))
   toastr.options =
   {
-  	"closeButton" : true,
-  	"progressBar" : true
+    "closeButton" : true,
+    "progressBar" : true
   }
-  		toastr.error("{{ session('error') }}");
+      toastr.error("{{ session('error') }}");
   @endif
 
   @if(Session::has('info'))
   toastr.options =
   {
-  	"closeButton" : true,
-  	"progressBar" : true
+    "closeButton" : true,
+    "progressBar" : true
   }
-  		toastr.info("{{ session('info') }}");
+      toastr.info("{{ session('info') }}");
   @endif
 
   @if(Session::has('warning'))
   toastr.options =
   {
-  	"closeButton" : true,
-  	"progressBar" : true
+    "closeButton" : true,
+    "progressBar" : true
   }
-  		toastr.warning("{{ session('warning') }}");
+      toastr.warning("{{ session('warning') }}");
   @endif
+  @if ($errors->any())
+
+      @foreach ($errors->all() as $error)
+      toastr.options =
+    {
+      "closeButton" : true,
+      "progressBar" : true
+    }
+        toastr.error("{{ $error }}");
+      @endforeach
+  
+    @endif
 </script>
 <!-- Modal -->
 <form method="post" action="{{route('editProfilePost')}}">
